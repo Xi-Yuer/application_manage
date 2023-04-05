@@ -1,9 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Menu, Header } from '@/components';
+
+</script>
 
 <template>
   <div>
-    Main
-    <ElButton type="primary">按钮</ElButton>
+    <el-container class='h-screen'>
+      <el-aside width="200px">
+        <Menu />
+      </el-aside>
+      <el-container>
+        <el-header>
+          <Header />
+        </el-header>
+        <el-main>Main</el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 

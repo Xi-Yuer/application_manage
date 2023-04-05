@@ -50,7 +50,12 @@ defineExpose({
       <el-form-item label="验证码" prop="code">
         <div class="flex">
           <el-input v-model="form.code"></el-input>
-          <el-button @click="handleGetCode" type="primary" class="ml-2 w-[100px]" :disabled="inLoding">
+          <el-button
+            @click="handleGetCode"
+            type="primary"
+            class="ml-2 w-[100px]"
+            :disabled="inLoding"
+          >
             {{ loadingTip }}
           </el-button>
         </div>

@@ -19,7 +19,7 @@ class Request {
     // 所有实例都会有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        NProgress.start();
+        NProgress.start()
         const accountData = local.getCache(USER_ACCOUNT)
         if (accountData.token) {
           config.headers.Authorization = `Bearer ${accountData.token}`
