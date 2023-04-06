@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import local from '@/utils/cache/index'
 import { useRouter } from 'vue-router'
 import { USER_ACCOUNT, USER_MENU_LIST, USER_DETAIL } from '@/constant'
+import BreadCrumb from '@/components/breadcrumb/index.vue'
 
 const router = useRouter()
 const { isFold } = storeToRefs(useUIStore())
@@ -29,8 +30,8 @@ const handleCommand = (command: string) => {
       </el-icon>
     </div>
     <div class="flex justify-between flex-1">
-      <div class="breadcrumb">面包屑</div>
-      <div class="w-[200px] flex justify-between cursor-pointer">
+      <div class="breadcrumb"><BreadCrumb /></div>
+      <div class="opra w-[200px] flex">
         <el-icon><Moon /></el-icon>
         <el-icon><Search /></el-icon>
         <el-icon><FullScreen /></el-icon>
@@ -58,5 +59,8 @@ const handleCommand = (command: string) => {
 }
 .menu_icon {
   @apply flex items-center pr-4 cursor-pointer;
+}
+.opra {
+  @apply justify-between cursor-pointer;
 }
 </style>

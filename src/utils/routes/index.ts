@@ -12,6 +12,9 @@ export function MapMenuToRoutes(userMenuList: any) {
         firstPath = route?.path
       }
       if (route) {
+        if (!routes.find((item) => item.path === menu.url)) {
+          routes.push({ path: menu.url, redirect: route.path })
+        }
         routes.push(route)
       }
     }
@@ -33,4 +36,18 @@ function getRoutesFileObj() {
   }
 
   return routes
+}
+
+export function mapPathToBreadcrumbs(path: string, userMenuList: any[]) {
+  const breadcrumbs: any[] = []
+  for (const menu of userMenuList) {
+    for (const subMenu of menu.children) {
+      if (subMenu.url === path) {
+        breadcrumbs.push({ name: menu.name, path: menu.url })
+        breadcrumbs.push({ name: subMenu.name, path: subMenu.url })
+      }
+    }
+  }
+
+  return breadcrumbs
 }
