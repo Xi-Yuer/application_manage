@@ -19,7 +19,9 @@ const router = createRouter({
     },
     {
       path: '/main',
+      name: 'main',
       component: Main
+      // redirect: '/main/analysis/overview',
     },
     {
       path: '/:pathMatch(.*)',
@@ -35,11 +37,11 @@ router.beforeEach((to, from) => {
     if (!token) return '/login'
   }
   // 已登录不允许跳转到登录页
-  // if (to.path === '/login') {
-  //   if (token) {
-  //     return '/main'
-  //   }
-  // }
+  if (to.path === '/login') {
+    if (token) {
+      return '/main'
+    }
+  }
 })
 
 export default router

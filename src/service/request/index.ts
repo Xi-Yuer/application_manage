@@ -21,7 +21,7 @@ class Request {
       (config) => {
         NProgress.start()
         const accountData = local.getCache(USER_ACCOUNT)
-        if (accountData.token) {
+        if (accountData?.token) {
           config.headers.Authorization = `Bearer ${accountData.token}`
         }
         return config
