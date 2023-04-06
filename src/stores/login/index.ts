@@ -13,12 +13,13 @@ import type {
   IuserDetail
 } from '@/types/user'
 import router from '@/router'
+import { MapMenuToRoutes } from '@/utils/routes'
 
 export const useLoginStore = defineStore('login', () => {
   // 数据层
-  const accountData = ref<IAccount>(local.getCache(USER_ACCOUNT) ?? {})
-  const userDetail = ref<IuserDetail>(local.getCache(USER_DETAIL) ?? {})
-  const userMenuList = ref<IMenuList[]>(local.getCache(USER_MENU_LIST) ?? [])
+  const accountData = ref<IAccount>()
+  const userDetail = ref<IuserDetail>()
+  const userMenuList = ref<IMenuList[]>([])
 
   // 方法层
   async function LoginAction(account: IAccount, isRemember: boolean, cb?: () => void) {
@@ -40,6 +41,12 @@ export const useLoginStore = defineStore('login', () => {
     local.setCache(USER_MENU_LIST, userMenuListResult.data)
     userMenuList.value = userMenuListResult.data
 
+    // 动态添加路由
+    const routes = MapMenuToRoutes(userMenuListResult.data)
+    routes.forEach((route) => {
+      router.addRoute('main', route)
+    })
+
     cb && cb()
 
     if (isRemember) {
@@ -51,11 +58,29 @@ export const useLoginStore = defineStore('login', () => {
     router.push('/main')
   }
 
+  function loadCacheAction() {
+    const account = local.getCache(USER_ACCOUNT)
+    const detail = local.getCache(USER_DETAIL)
+    const menulist = local.getCache(USER_MENU_LIST)
+    if (account && detail && menulist) {
+      accountData.value = account
+      userDetail.value = detail
+      userMenuList.value = menulist
+
+      // 动态添加路由
+      const routes = MapMenuToRoutes(menulist)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+    }
+  }
+
   // 导出层
   return {
     accountData,
     userDetail,
     userMenuList,
-    LoginAction
+    LoginAction,
+    loadCacheAction
   }
 })

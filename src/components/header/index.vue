@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { useUIStore } from '@/stores/ui/index'
+import { useLoginStore } from '@/stores/login/index'
 import { storeToRefs } from 'pinia'
 import local from '@/utils/cache/index'
 import { useRouter } from 'vue-router'
-import { USER_ACCOUNT } from '@/constant'
+import { USER_ACCOUNT, USER_MENU_LIST, USER_DETAIL } from '@/constant'
 
+const router = useRouter()
 const { isFold } = storeToRefs(useUIStore())
 const { changeFold } = useUIStore()
-const router = useRouter()
+const { userDetail } = storeToRefs(useLoginStore())
 
 const handleCommand = (command: string) => {
   if (command === 'outlogin') {
     local.deleteCache(USER_ACCOUNT)
+    local.deleteCache(USER_MENU_LIST)
+    local.deleteCache(USER_DETAIL)
     router.push('/login')
   }
 }
@@ -34,7 +38,7 @@ const handleCommand = (command: string) => {
           <el-dropdown @command="handleCommand">
             <div class="flex">
               <el-avatar :size="30" class="mr-4" />
-              <span>名字</span>
+              <span>{{ userDetail?.name }}</span>
             </div>
             <template #dropdown>
               <el-dropdown-menu>

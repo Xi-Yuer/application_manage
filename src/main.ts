@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 
 import 'normalize.css'
 import 'nprogress/nprogress.css'
@@ -7,6 +6,7 @@ import '@/assets/css/index.less'
 
 import App from './App.vue'
 import router from './router'
-import { registerIcons } from './plugins/registerIcons'
+import { icon } from './plugins/registerIcons'
+import store from './stores'
 
-createApp(App).use(createPinia()).use(router).use(registerIcons).mount('#app')
+createApp(App).use(store).use(router).use(icon).mount('#app')

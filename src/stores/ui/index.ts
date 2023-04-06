@@ -7,7 +7,6 @@ export const useUIStore = defineStore('uiStore', () => {
   const changeFold = () => {
     isFold.value = !isFold.value
   }
-
   return {
     isFold,
     changeFold

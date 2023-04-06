@@ -1,6 +1,6 @@
-const DashBoard = () => import('@/views/main/analysis/dshBoard/index.vue')
+const DashBoard = () => import('@/views/main/analysis/dashboard/index.vue')
 
 export default {
-  path: '/main/analysis/overview',
+  path: '/main/analysis/dashboard',
   component: DashBoard
 }

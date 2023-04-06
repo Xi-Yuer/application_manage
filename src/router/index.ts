@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import local from '@/utils/cache/index'
 import { USER_ACCOUNT } from '@/constant'
+import { firstPath } from '@/utils/routes'
 
 const Login = () => import('@/views/login/index.vue')
 const Main = () => import('@/views/main/main.vue')
@@ -21,7 +22,6 @@ const router = createRouter({
       path: '/main',
       name: 'main',
       component: Main
-      // redirect: '/main/analysis/overview',
     },
     {
       path: '/:pathMatch(.*)',
@@ -41,6 +41,9 @@ router.beforeEach((to, from) => {
     if (token) {
       return '/main'
     }
+  }
+  if (to.path === '/main') {
+    return firstPath
   }
 })
 
