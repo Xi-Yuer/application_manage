@@ -20,17 +20,22 @@ export const useSystemStore = defineStore('system', () => {
       list: [],
       totalCount: 0
     },
-    department: {
+    [SystemModule.DEPARTMENT]: {
       list: [],
       totalCount: 0
     },
-    menu: {}
+    [SystemModule.MENU]: {
+      list: []
+    }
   })
   // 获取列表
-  const changeSystemModuleListAction = async (module: SystemModule) => {
-    const result = await postModuleListData<IUserList>({ module: module })
-    system[module].list = result.data.list
-    system[module].totalCount = result.data.totalCount
+  const changeSystemModuleListAction = async (
+    module: SystemModule,
+    queryInfo?: Record<string, any>
+  ) => {
+    const result = await postModuleListData<IUserList>({ module: module, queryInfo })
+    result.data.list && (system[module].list = result.data.list)
+    result.data.totalCount && (system[module].totalCount = result.data.totalCount)
   }
   // 删除
   const deleteSystemModuleByIdAction = async (config: { id: number; module: SystemModule }) => {
@@ -38,14 +43,17 @@ export const useSystemStore = defineStore('system', () => {
     changeSystemModuleListAction(config.module)
   }
   // 新建
-  const newSystemModuleDataAction = async (config: { moduleInfo: any; module: SystemModule }) => {
+  const newSystemModuleDataAction = async (config: {
+    moduleInfo: Record<string, any>
+    module: SystemModule
+  }) => {
     await newModuleData({ moduleInfo: config.moduleInfo, module: config.module })
     changeSystemModuleListAction(config.module)
   }
   // 编辑
   const editSystemModuleDataAction = async (config: {
     id: number
-    moduleInfo: any
+    moduleInfo: Record<string, any>
     module: SystemModule
   }) => {
     await editModuleData({ module: config.module, id: config.id, moduleInfo: config.moduleInfo })

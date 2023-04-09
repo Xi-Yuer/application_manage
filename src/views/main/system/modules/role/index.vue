@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { useSystemStore } from '@/stores/mian/system'
 import TableSearch from '@/base-ui/tabel-search/index.vue'
 import TableContent from '@/base-ui/tabel-content/index.vue'
 import TableModel from '@/base-ui/tabel-model/index.vue'
-import { onMounted } from 'vue'
 import { SystemModule } from '@/stores/types'
+import { useFetch } from '../../hooks/usefetch'
 
-const fetchData = () => {
-  useSystemStore().changeSystemModuleListAction(SystemModule.USER)
+import searchConfig from './config/search'
+
+const { fetchData } = useFetch(SystemModule.ROLE)
+
+const handleQuery = (queryInfo: Record<string, any>) => {
+  fetchData(queryInfo)
 }
-onMounted(() => {
-  fetchData()
-})
 </script>
 
 <template>
   <div>
     <div class="search">
-      <table-search />
+      <table-search :searchConfig="searchConfig" @query="handleQuery" />
       <table-content />
       <table-model />
     </div>

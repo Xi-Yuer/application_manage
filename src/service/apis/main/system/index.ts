@@ -3,16 +3,16 @@ import type { SystemModule } from '@/stores/types'
 
 /**
  *
- *  用户相关请求
+ *  系统相关请求
  *
  */
-export function postModuleListData<T>(config: { module: SystemModule }) {
+export function postModuleListData<T>(config: {
+  module: SystemModule
+  queryInfo?: Record<string, any>
+}) {
   return request.post<T>({
     url: `/${config.module}/list`,
-    data: {
-      offset: 0,
-      size: 10
-    }
+    data: config.queryInfo
   })
 }
 

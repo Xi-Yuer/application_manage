@@ -7,5 +7,7 @@ export interface ISystemStateType {
 
 export enum SystemModule {
   USER = 'users',
-  ROLE = 'role'
+  ROLE = 'role',
+  DEPARTMENT = 'department',
+  MENU = 'menu'
 }

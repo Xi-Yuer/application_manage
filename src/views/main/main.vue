@@ -16,7 +16,7 @@ const { isFold } = storeToRefs(useUIStore())
         <el-header>
           <Header />
         </el-header>
-        <el-main class="bg-slate-100">
+        <el-main class="bg-slate-100 min-w-[550px]">
           <RouterView />
         </el-main>
       </el-container>
