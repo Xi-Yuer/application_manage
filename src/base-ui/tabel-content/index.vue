@@ -5,6 +5,7 @@ interface IProps {
   tableConfig: {
     tableRows: Record<string, any>[]
   }
+  loading: boolean
   data: any[]
   count: number
 }
@@ -30,7 +31,7 @@ watchEffect(() => {
 
 <template>
   <div class="mt-6 bg-white py-10">
-    <el-table :data="data" style="width: 100%" border>
+    <el-table :data="data" style="width: 100%" border v-loading="loading">
       <template v-for="item in tableConfig?.tableRows" :key="item.prop">
         <template v-if="item.type === `custom`">
           <el-table-column :label="item.label" :type="item.type" :width="item.width" align="center">

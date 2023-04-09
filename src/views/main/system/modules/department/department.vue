@@ -10,14 +10,15 @@ import TableConfig from './config/content'
 import { formatDate } from '@/utils/format/time'
 import { useTable } from '../../hooks/useTable'
 
-const { fetchData } = useFetch(SystemModule.DEPARTMENT)
+const { fetchData, loading } = useFetch(SystemModule.DEPARTMENT)
 const { system, handleEdit, handleDelete } = useTable(SystemModule.DEPARTMENT)
 </script>
 
 <template>
   <div>
-    <table-search :searchConfig="searchConfig" @query="fetchData" />
+    <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
     <table-content
+      :loading='loading'
       :tableConfig="TableConfig"
       :data="system[SystemModule.DEPARTMENT].list"
       :count="system[SystemModule.DEPARTMENT].totalCount"

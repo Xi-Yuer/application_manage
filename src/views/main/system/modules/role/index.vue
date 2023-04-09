@@ -10,15 +10,16 @@ import searchConfig from './config/search'
 import TableConfig from './config/content'
 import { useTable } from '../../hooks/useTable'
 
-const { fetchData } = useFetch(SystemModule.ROLE)
+const { fetchData, loading } = useFetch(SystemModule.ROLE)
 const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE)
 </script>
 
 <template>
   <div>
     <div class="search">
-      <table-search :searchConfig="searchConfig" @query="fetchData" />
+      <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
       <table-content
+        :loading="loading"
         :tableConfig="TableConfig"
         :data="system[SystemModule.ROLE].list"
         :count="system[SystemModule.ROLE].totalCount"
