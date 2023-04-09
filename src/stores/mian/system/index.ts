@@ -34,8 +34,8 @@ export const useSystemStore = defineStore('system', () => {
     queryInfo?: Record<string, any>
   ) => {
     const result = await postModuleListData<IUserList>({ module: module, queryInfo })
-    result.data.list && (system[module].list = result.data.list)
-    result.data.totalCount && (system[module].totalCount = result.data.totalCount)
+    result?.data?.list && (system[module].list = result.data.list)
+    result?.data?.totalCount && (system[module].totalCount = result.data.totalCount)
   }
   // 删除
   const deleteSystemModuleByIdAction = async (config: { id: number; module: SystemModule }) => {

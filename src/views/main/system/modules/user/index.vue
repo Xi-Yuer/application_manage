@@ -6,18 +6,47 @@ import { SystemModule } from '@/stores/types'
 import { useFetch } from '../../hooks/usefetch'
 
 import searchConfig from './config/search'
+import TableConfig from './config/content'
+import { formatDate } from '@/utils/format/time'
+import { useTable } from '../../hooks/useTable'
 
 const { fetchData } = useFetch(SystemModule.USER)
+
+const { system, handleEdit, handleDelete } = useTable(SystemModule.USER)
 </script>
 
 <template>
   <div>
     <div class="search">
-      <table-search :searchConfig="searchConfig" @query="fetchData" />
-      <table-content />
+      <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
+      <table-content
+        :tableConfig="TableConfig"
+        :data="system[SystemModule.USER].list"
+        :count="system[SystemModule.USER].totalCount"
+        @refresh="fetchData"
+      >
+        <template #enable="row">
+          <el-button :type="row.enable ? 'primary' : 'danger'" plain size="small">
+            {{ row.enable ? '启用' : '禁用' }}
+          </el-button>
+        </template>
+        <template #createAt="row">
+          <el-link>
+            {{ formatDate(row.createAt, 'yyyy-dd-MM hh:ss:mm') }}
+          </el-link>
+        </template>
+        <template #updateAt="row">
+          <el-link>
+            {{ formatDate(row.updateAt, 'yyyy-dd-MM hh:ss:mm') }}
+          </el-link>
+        </template>
+        <template #operation="row">
+          <el-button icon="Edit" type="primary" text @click="handleEdit(row)">修改</el-button>
+          <el-button icon="Delete" type="danger" text @click="handleDelete(row)">删除</el-button>
+        </template>
+      </table-content>
       <table-model />
     </div>
-    <div class="content"></div>
   </div>
 </template>
 

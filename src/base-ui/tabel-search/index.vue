@@ -7,7 +7,7 @@ interface IPropType {
     formItems: any[]
   }
 }
-const emit = defineEmits(['query'])
+const emit = defineEmits(['query', 'reset'])
 const props = defineProps<IPropType>()
 const { searchConfig } = toRefs(props)
 
@@ -22,6 +22,7 @@ const FormRef = ref<FormInstance>()
 // 重置
 const handleRefresh = () => {
   FormRef.value?.resetFields()
+  emit('reset')
 }
 // 查询
 const handleQuery = () => {

@@ -65,11 +65,11 @@ export const useLoginStore = defineStore('login', () => {
     const account = local.getCache(USER_ACCOUNT)
     const detail = local.getCache(USER_DETAIL)
     const menulist = local.getCache(USER_MENU_LIST)
-    useGlobalStore().fetchEntireDataAction()
     if (account && detail && menulist) {
       accountData.value = account
       userDetail.value = detail
       userMenuList.value = menulist
+      useGlobalStore().fetchEntireDataAction()
 
       // 动态添加路由
       const routes = MapMenuToRoutes(menulist)
