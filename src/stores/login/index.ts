@@ -14,6 +14,7 @@ import type {
 } from '@/types/user'
 import router from '@/router'
 import { MapMenuToRoutes } from '@/utils/routes'
+import { useGlobalStore } from '../mian/global'
 
 export const useLoginStore = defineStore('login', () => {
   // 数据层
@@ -47,6 +48,8 @@ export const useLoginStore = defineStore('login', () => {
       router.addRoute('main', route)
     })
 
+    useGlobalStore().fetchEntireDataAction()
+
     cb && cb()
 
     if (isRemember) {
@@ -62,6 +65,7 @@ export const useLoginStore = defineStore('login', () => {
     const account = local.getCache(USER_ACCOUNT)
     const detail = local.getCache(USER_DETAIL)
     const menulist = local.getCache(USER_MENU_LIST)
+    useGlobalStore().fetchEntireDataAction()
     if (account && detail && menulist) {
       accountData.value = account
       userDetail.value = detail

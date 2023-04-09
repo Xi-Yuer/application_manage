@@ -38,7 +38,7 @@ const handleCommand = (command: string) => {
         <div class="w-[100px] flex">
           <el-dropdown @command="handleCommand">
             <div class="flex">
-              <el-avatar :size="30" class="mr-4" />
+              <el-avatar :size="30" class="mr-2" />
               <span>{{ userDetail?.name }}</span>
             </div>
             <template #dropdown>
