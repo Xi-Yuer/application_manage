@@ -18,7 +18,7 @@ const { system, handleEdit, handleDelete } = useTable(SystemModule.DEPARTMENT)
   <div>
     <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
     <table-content
-      :loading='loading'
+      :loading="loading"
       :tableConfig="TableConfig"
       :data="system[SystemModule.DEPARTMENT].list"
       :count="system[SystemModule.DEPARTMENT].totalCount"

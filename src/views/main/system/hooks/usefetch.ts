@@ -9,9 +9,11 @@ export const useFetch = (module: SystemModule) => {
   })
   const fetchData = (queryInfo?: Record<string, any>) => {
     loading.value = true
-    useSystemStore().changeSystemModuleListAction(module, queryInfo).finally(() => {
-      loading.value = false
-    })
+    useSystemStore()
+      .changeSystemModuleListAction(module, queryInfo)
+      .finally(() => {
+        loading.value = false
+      })
   }
 
   return {
