@@ -1,25 +1,7 @@
 # vue-ts-cms
 
-## Project Setup
+## 高度的抽象和封装,不多写一行重复代码
 
-```sh
-npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```

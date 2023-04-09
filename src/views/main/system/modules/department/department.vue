@@ -8,15 +8,11 @@ import { useFetch } from '../../hooks/usefetch'
 import searchConfig from './config/search'
 
 const { fetchData } = useFetch(SystemModule.DEPARTMENT)
-
-const handleQuery = (queryInfo: Record<string, any>) => {
-  fetchData(queryInfo)
-}
 </script>
 
 <template>
   <div>
-    <table-search :searchConfig="searchConfig" @query="handleQuery" />
+    <table-search :searchConfig="searchConfig" @query="fetchData" />
     <table-content />
     <table-model />
   </div>
