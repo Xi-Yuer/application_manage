@@ -9,7 +9,7 @@ interface IProps {
   data: any[]
   count: number
 }
-const emit = defineEmits(['refresh'])
+const emit = defineEmits(['refresh', 'newBtnClick'])
 const props = defineProps<IProps>()
 const { tableConfig, data, count } = toRefs(props)
 const offset = ref(1)
@@ -23,6 +23,11 @@ const handleSizeChange = (val: number) => {
 const handleCurrentChange = (val: number) => {
   offset.value = val
 }
+
+// 新建数据
+const handleNewBtnClick = () => {
+  emit('newBtnClick')
+}
 // 分页变化
 watchEffect(() => {
   emit('refresh', { offset: (offset.value - 1) * size.value, size: size.value })
@@ -30,7 +35,11 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="mt-6 bg-white py-10">
+  <div class="mt-6 bg-white p-4">
+    <div class="flex justify-between h-[60px] items-center">
+      <h2 class="font-bold text-lg">数据列表</h2>
+      <el-button type="primary" icon="Plus" plain @click="handleNewBtnClick">新建</el-button>
+    </div>
     <el-table :data="data" style="width: 100%" border v-loading="loading">
       <template v-for="item in tableConfig?.tableRows" :key="item.prop">
         <template v-if="item.type === `custom`">

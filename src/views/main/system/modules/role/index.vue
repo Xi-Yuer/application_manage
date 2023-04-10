@@ -8,10 +8,17 @@ import { formatDate } from '@/utils/format/time'
 
 import searchConfig from './config/search'
 import TableConfig from './config/content'
+import modelConfig from './config/model'
 import { useTable } from '../../hooks/useTable'
+import { ref } from 'vue'
 
 const { fetchData, loading } = useFetch(SystemModule.ROLE)
-const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE)
+const modelRef = ref<InstanceType<typeof TableModel>>()
+const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE, modelRef)
+
+const handleNewData = () => {
+  modelRef.value!.showModel(false)
+}
 </script>
 
 <template>
@@ -24,6 +31,7 @@ const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE)
         :data="system[SystemModule.ROLE].list"
         :count="system[SystemModule.ROLE].totalCount"
         @refresh="fetchData"
+        @newBtnClick="handleNewData"
       >
         <template #createAt="row">
           <el-link>
@@ -40,7 +48,7 @@ const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE)
           <el-button icon="Delete" type="danger" text @click="handleDelete(row)">删除</el-button>
         </template>
       </table-content>
-      <table-model />
+      <table-model ref="modelRef" :modelConfig="modelConfig" :module="SystemModule.ROLE" />
     </div>
   </div>
 </template>
