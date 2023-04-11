@@ -9,5 +9,7 @@ export enum SystemModule {
   USER = 'users',
   ROLE = 'role',
   DEPARTMENT = 'department',
-  MENU = 'menu'
+  MENU = 'menu',
+  CATEGORY = 'category',
+  GOODS = 'goods'
 }

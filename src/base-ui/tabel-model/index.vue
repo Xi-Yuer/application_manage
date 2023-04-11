@@ -38,9 +38,16 @@ const { newSystemModuleDataAction, editSystemModuleDataAction } = useSystemStore
 
 // 确定开始发起网路请求修改或新增数据
 const handleConfirm = async () => {
-  let checkedKeys = (TreeRef?.value as any).value?.getCheckedKeys()
-  const data = {
-    ...Form
+  let checkedKeys
+  if (TreeRef?.value) {
+    checkedKeys = (TreeRef?.value as any).value?.getCheckedKeys()
+  }
+  const data: any = {}
+  // 清空无用字段信息
+  for (const key in Form) {
+    if (Form[key]) {
+      data[key] = Form[key]
+    }
   }
   if (checkedKeys) {
     data.menuList = checkedKeys
@@ -82,7 +89,9 @@ const showModel = (
     for (const key in options.form) {
       // eslint-disable-next-line no-prototype-builtins
       if (initailForm.hasOwnProperty(key)) {
-        Form[key] = options.form[key]
+        if (options.form[key]) {
+          Form[key] = options.form[key]
+        }
       }
     }
   } else if (!isEdit) {

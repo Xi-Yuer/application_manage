@@ -26,6 +26,14 @@ export const useSystemStore = defineStore('system', () => {
     },
     [SystemModule.MENU]: {
       list: []
+    },
+    [SystemModule.CATEGORY]: {
+      list: [],
+      totalCount: 0
+    },
+    [SystemModule.GOODS]: {
+      list: [],
+      totalCount: 0
     }
   })
   // 获取列表

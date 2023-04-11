@@ -26,7 +26,14 @@ const handleRefresh = () => {
 }
 // 查询
 const handleQuery = () => {
-  emit('query', searchForm)
+  const queryData: any = {}
+  // 清空无用字段信息
+  for (const key in searchForm) {
+    if (searchForm[key]) {
+      queryData[key] = searchForm[key]
+    }
+  }
+  emit('query', queryData)
 }
 </script>
 

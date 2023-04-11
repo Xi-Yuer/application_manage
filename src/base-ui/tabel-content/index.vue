@@ -56,7 +56,7 @@ watchEffect(() => {
             :prop="item.prop"
             :type="item.type"
             :width="item.width"
-          ></el-table-column>
+          />
         </template>
       </template>
     </el-table>
