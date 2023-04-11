@@ -7,11 +7,11 @@ interface IProps {
   }
   loading: boolean
   data: any[]
-  count: number
+  count?: number
 }
 const emit = defineEmits(['refresh', 'newBtnClick'])
 const props = defineProps<IProps>()
-const { tableConfig, data, count } = toRefs(props)
+const { tableConfig, loading, data, count } = toRefs(props)
 const offset = ref(1)
 const size = ref(10)
 
@@ -40,7 +40,7 @@ watchEffect(() => {
       <h2 class="font-bold text-lg">数据列表</h2>
       <el-button type="primary" icon="Plus" plain @click="handleNewBtnClick">新建</el-button>
     </div>
-    <el-table :data="data" style="width: 100%" border v-loading="loading">
+    <el-table :data="data" style="width: 100%" border v-loading="loading" row-key="id" lazy>
       <template v-for="item in tableConfig?.tableRows" :key="item.prop">
         <template v-if="item.type === `custom`">
           <el-table-column :label="item.label" :type="item.type" :width="item.width" align="center">
@@ -60,7 +60,7 @@ watchEffect(() => {
         </template>
       </template>
     </el-table>
-    <div class="flex pt-4">
+    <div class="flex pt-4" v-if="count">
       <el-pagination
         background
         layout="total, sizes, prev, pager, next, jumper"

@@ -1,24 +1,36 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import TableSearch from '@/base-ui/tabel-search/index.vue'
 import TableContent from '@/base-ui/tabel-content/index.vue'
 import TableModel from '@/base-ui/tabel-model/index.vue'
+
 import { SystemModule } from '@/stores/types'
-import { useFetch } from '../../hooks/usefetch'
 import { formatDate } from '@/utils/format/time'
 
 import searchConfig from './config/search'
-import TableConfig from './config/content'
+import tableConfig from './config/content'
 import modelConfig from './config/model'
+
 import { useTable } from '../../hooks/useTable'
-import { ref } from 'vue'
+import { useFetch } from '../../hooks/usefetch'
+import { useGlobalStore } from '@/stores/mian/global'
+import { storeToRefs } from 'pinia'
+import type { ElTree } from 'element-plus/es/components/tree'
 
+const treeRef = ref<InstanceType<typeof ElTree>>()
+const { global } = storeToRefs(useGlobalStore())
 const { fetchData, loading } = useFetch(SystemModule.ROLE)
-const modelRef = ref<InstanceType<typeof TableModel>>()
-const { system, handleEdit, handleDelete } = useTable(SystemModule.ROLE, modelRef)
-
-const handleNewData = () => {
-  modelRef.value!.showModel(false)
-}
+const {
+  system,
+  modelRef,
+  loading: deleteLoading,
+  handleEdit,
+  handleDelete,
+  handleNewData
+} = useTable(SystemModule.ROLE, {
+  ref: treeRef
+})
 </script>
 
 <template>
@@ -26,8 +38,8 @@ const handleNewData = () => {
     <div class="search">
       <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
       <table-content
-        :loading="loading"
-        :tableConfig="TableConfig"
+        :loading="loading || deleteLoading"
+        :tableConfig="tableConfig"
         :data="system[SystemModule.ROLE].list"
         :count="system[SystemModule.ROLE].totalCount"
         @refresh="fetchData"
@@ -48,7 +60,18 @@ const handleNewData = () => {
           <el-button icon="Delete" type="danger" text @click="handleDelete(row)">删除</el-button>
         </template>
       </table-content>
-      <table-model ref="modelRef" :modelConfig="modelConfig" :module="SystemModule.ROLE" />
+      <table-model ref="modelRef" :modelConfig="modelConfig" :module="SystemModule.ROLE">
+        <template #permission>
+          <el-tree
+            ref="treeRef"
+            :data="global.entireMenus.list"
+            show-checkbox
+            node-key="id"
+            highlight-current
+            :props="{ children: 'children', label: 'name' }"
+          />
+        </template>
+      </table-model>
     </div>
   </div>
 </template>

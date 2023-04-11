@@ -8,15 +8,15 @@ const modelConfig: IPropType = {
   formItems: [
     {
       type: 'input',
-      prop: 'leader',
-      label: '部门领导',
-      placeholder: '请输入部门领导'
-    },
-    {
-      type: 'input',
       prop: 'name',
       label: '部门名称',
       placeholder: '请输入部门名称'
+    },
+    {
+      type: 'input',
+      prop: 'leader',
+      label: '部门领导',
+      placeholder: '请输入部门领导'
     }
   ]
 }

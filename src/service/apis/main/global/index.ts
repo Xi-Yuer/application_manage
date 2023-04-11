@@ -11,3 +11,9 @@ export const getEntireDepartment = <T>() => {
     url: '/department/list'
   })
 }
+
+export const getEntireMenus = <T>() => {
+  return request.post<T>({
+    url: '/menu/list'
+  })
+}

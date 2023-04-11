@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useSystemStore } from '@/stores/mian/system'
 import type { SystemModule } from '@/stores/types'
+import { MapMenuToIds } from '@/utils/format/map-menus'
 import type { FormInstance } from 'element-plus/es/components/form'
-import { reactive, ref, toRefs } from 'vue'
+import type { ElTree } from 'element-plus/es/components/tree'
+import { nextTick, reactive, ref, toRefs } from 'vue'
 
 interface IProps {
   modelConfig: {
@@ -20,6 +22,7 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 const FormRef = ref<FormInstance>()
+const TreeRef = ref<InstanceType<typeof ElTree>>()
 const showRef = ref(false)
 const isEditRef = ref(false)
 const loading = ref(false)
@@ -33,34 +36,53 @@ const Form = reactive<Record<string, any>>(initailForm)
 
 const { newSystemModuleDataAction, editSystemModuleDataAction } = useSystemStore()
 
+// 确定开始发起网路请求修改或新增数据
 const handleConfirm = async () => {
+  let checkedKeys = (TreeRef?.value as any).value?.getCheckedKeys()
+  const data = {
+    ...Form
+  }
+  if (checkedKeys) {
+    data.menuList = checkedKeys
+  }
   loading.value = true
   if (isEditRef.value) {
-    // 编辑用户
+    // 编辑
     await editSystemModuleDataAction({
       module: module.value,
-      moduleInfo: Form,
+      moduleInfo: data,
       id: currentEditId.value
     })
   } else {
-    // 新建用户
-    await newSystemModuleDataAction({ module: module.value, moduleInfo: Form })
+    // 新建
+    await newSystemModuleDataAction({ module: module.value, moduleInfo: data })
   }
   loading.value = false
   showRef.value = false
 }
-
 // 打开 model
-const showModel = (isEdit: boolean, form?: any) => {
+const showModel = (
+  isEdit: boolean,
+  options?: {
+    form?: any
+    ref?: InstanceType<typeof ElTree>
+  }
+) => {
   showRef.value = true
   isEditRef.value = isEdit
-  if (form && isEdit) {
+  TreeRef.value = options?.ref
+  if (options?.form && isEdit) {
     // 编辑状态赋值
-    currentEditId.value = form.id
-    for (const key in form) {
+    currentEditId.value = options.form.id
+    nextTick(() => {
+      if (TreeRef?.value) {
+        ;(TreeRef?.value as any).value?.setCheckedKeys(MapMenuToIds(options?.form.menuList))
+      }
+    })
+    for (const key in options.form) {
       // eslint-disable-next-line no-prototype-builtins
       if (initailForm.hasOwnProperty(key)) {
-        Form[key] = form[key]
+        Form[key] = options.form[key]
       }
     }
   } else if (!isEdit) {
@@ -84,7 +106,7 @@ defineExpose({
   >
     <el-form :model="Form" label-width="100px" ref="FormRef" :rules="rules" v-loading="loading">
       <template v-for="inputItem in modelConfig.formItems" :key="inputItem.prop">
-        <el-form-item :label="inputItem.label" :prop="inputItem.prop">
+        <el-form-item :label="inputItem.label" :prop="inputItem.prop" v-if="!isEditRef">
           <template v-if="inputItem.type === 'input'">
             <el-input
               :placeholder="inputItem.placeholder"
@@ -112,6 +134,46 @@ defineExpose({
                 :value="item.value"
               />
             </el-select>
+          </template>
+          <template v-if="inputItem.type === 'custom'">
+            <slot :name="inputItem.prop"></slot>
+          </template>
+        </el-form-item>
+        <el-form-item
+          :label="inputItem.label"
+          :prop="inputItem.prop"
+          v-if="isEditRef && inputItem.prop !== 'password'"
+        >
+          <template v-if="inputItem.type === 'input'">
+            <el-input
+              :placeholder="inputItem.placeholder"
+              v-model="Form[inputItem.prop]"
+            ></el-input>
+          </template>
+          <template v-if="inputItem.type === 'date-picker'">
+            <el-date-picker
+              type="daterange"
+              v-model="Form[inputItem.prop]"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+            ></el-date-picker>
+          </template>
+          <template v-if="inputItem.type === 'select'">
+            <el-select
+              v-model="Form[inputItem.prop]"
+              :placeholder="inputItem.placeholder"
+              class="w-full"
+            >
+              <el-option
+                v-for="item in inputItem.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </template>
+          <template v-if="inputItem.type === 'custom'">
+            <slot :name="inputItem.prop"></slot>
           </template>
         </el-form-item>
       </template>

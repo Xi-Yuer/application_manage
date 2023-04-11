@@ -4,29 +4,31 @@ import TableContent from '@/base-ui/tabel-content/index.vue'
 import TableModel from '@/base-ui/tabel-model/index.vue'
 
 import { SystemModule } from '@/stores/types'
-import { useFetch } from '../../hooks/usefetch'
-import searchConfig from './config/search'
-import TableConfig from './config/content'
-import modelConfig from './config/model'
 import { formatDate } from '@/utils/format/time'
+
+import searchConfig from './config/search'
+import tableConfig from './config/content'
+import modelConfig from './config/model'
+
 import { useTable } from '../../hooks/useTable'
-import { ref } from 'vue'
-
-const modelRef = ref<InstanceType<typeof TableModel>>()
+import { useFetch } from '../../hooks/usefetch'
 const { fetchData, loading } = useFetch(SystemModule.DEPARTMENT)
-const { system, handleEdit, handleDelete } = useTable(SystemModule.DEPARTMENT, modelRef)
-
-const handleNewData = () => {
-  modelRef.value!.showModel(false)
-}
+const {
+  system,
+  modelRef,
+  loading: deleteLoading,
+  handleEdit,
+  handleDelete,
+  handleNewData
+} = useTable(SystemModule.DEPARTMENT)
 </script>
 
 <template>
   <div>
     <table-search :searchConfig="searchConfig" @query="fetchData" @reset="fetchData" />
     <table-content
-      :loading="loading"
-      :tableConfig="TableConfig"
+      :loading="loading || deleteLoading"
+      :tableConfig="tableConfig"
       :data="system[SystemModule.DEPARTMENT].list"
       :count="system[SystemModule.DEPARTMENT].totalCount"
       @refresh="fetchData"
