@@ -141,7 +141,16 @@ defineExpose({
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              />
+              >
+                <template v-if="inputItem.prop === 'icon'">
+                  <div class="flex items-center justify-start gap-2">
+                    <el-icon>
+                      <component :is="item.label"></component>
+                    </el-icon>
+                    <span>{{ item.value }}</span>
+                  </div>
+                </template>
+              </el-option>
             </el-select>
           </template>
           <template v-if="inputItem.type === 'custom'">
@@ -178,7 +187,16 @@ defineExpose({
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              />
+              >
+                <template v-if="inputItem.prop === 'icon'">
+                  <div class="flex items-center justify-start gap-2">
+                    <el-icon>
+                      <component :is="item.label"></component>
+                    </el-icon>
+                    <span>{{ item.value }}</span>
+                  </div>
+                </template>
+              </el-option>
             </el-select>
           </template>
           <template v-if="inputItem.type === 'custom'">

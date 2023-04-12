@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { SystemModule } from '@/stores/types'
 import type { FormInstance } from 'element-plus/es/components/form'
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, toRefs, ref, computed } from 'vue'
 
 interface IPropType {
   searchConfig: {
     formItems: any[]
+    module: SystemModule
   }
 }
 const emit = defineEmits(['query', 'reset'])
@@ -35,10 +37,12 @@ const handleQuery = () => {
   }
   emit('query', queryData)
 }
+
+const Pquery = computed(() => `system:${searchConfig.value.module}:query`)
 </script>
 
 <template>
-  <div class="bg-white p-5">
+  <div class="bg-white p-5" v-permission="Pquery">
     <el-form :model="searchForm" label-width="100px" ref="FormRef">
       <el-row :gutter="20">
         <template v-for="inputItem in searchConfig.formItems" :key="inputItem.prop">

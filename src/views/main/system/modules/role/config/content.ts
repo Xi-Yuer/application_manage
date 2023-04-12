@@ -1,3 +1,5 @@
+import { SystemModule } from '@/stores/types'
+
 const TableConfig = {
   tableRows: [
     {
@@ -39,7 +41,8 @@ const TableConfig = {
       width: '200',
       label: '操作'
     }
-  ]
+  ],
+  module: SystemModule.ROLE
 }
 
 export default TableConfig

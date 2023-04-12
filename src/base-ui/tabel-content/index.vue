@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { SystemModule } from '@/stores/types'
 import { toRefs, defineProps, ref, watchEffect } from 'vue'
 
 interface IProps {
   tableConfig: {
     tableRows: Record<string, any>[]
+    module: SystemModule
   }
   loading: boolean
   data: any[]
@@ -32,13 +34,17 @@ const handleNewBtnClick = () => {
 watchEffect(() => {
   emit('refresh', { offset: (offset.value - 1) * size.value, size: size.value })
 })
+
+const Pcreate = `system:${tableConfig.value.module}:create`
 </script>
 
 <template>
   <div class="mt-6 bg-white p-4">
     <div class="flex justify-between h-[60px] items-center">
       <h2 class="font-bold text-lg">数据列表</h2>
-      <el-button type="primary" icon="Plus" plain @click="handleNewBtnClick">新建</el-button>
+      <el-button type="primary" icon="Plus" plain @click="handleNewBtnClick" v-permission="Pcreate">
+        新建
+      </el-button>
     </div>
     <el-table :data="data" style="width: 100%" border v-loading="loading" row-key="id" lazy>
       <template v-for="item in tableConfig?.tableRows" :key="item.prop">

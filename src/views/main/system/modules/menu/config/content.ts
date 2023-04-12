@@ -1,3 +1,5 @@
+import { SystemModule } from '@/stores/types'
+
 const tabelConfig = {
   tableRows: [
     {
@@ -15,6 +17,7 @@ const tabelConfig = {
       width: '180'
     },
     {
+      type: 'custom',
       label: '菜单Icon',
       prop: 'icon'
     },
@@ -42,7 +45,8 @@ const tabelConfig = {
       prop: 'operation',
       width: '200'
     }
-  ]
+  ],
+  module: SystemModule.MENU
 }
 
 export default tabelConfig

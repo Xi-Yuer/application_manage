@@ -1,3 +1,5 @@
+import { mapIcons } from '@/utils/format/map-icons'
+
 interface IPropType {
   header: string
   formItems: Array<Record<string, any>>
@@ -24,9 +26,10 @@ const modelConfig: IPropType = {
       width: '180'
     },
     {
-      type: 'input',
+      type: 'select',
       label: '菜单Icon',
-      prop: 'icon'
+      prop: 'icon',
+      options: mapIcons()
     },
     {
       type: 'input',

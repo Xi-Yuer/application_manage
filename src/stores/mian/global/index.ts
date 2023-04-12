@@ -1,5 +1,6 @@
 import { getEntireDepartment, getEntireMenus, getEntireRoles } from '@/service/apis/main/global'
 import type { IDepartment, IRole } from '@/types/user'
+import { mapPermission } from '@/utils/format/map-permission'
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
@@ -15,7 +16,8 @@ export const useGlobalStore = defineStore('global', () => {
     },
     entireMenus: {
       list: []
-    }
+    },
+    permissions: []
   })
 
   const fetchEntireDataAction = async () => {
@@ -26,6 +28,7 @@ export const useGlobalStore = defineStore('global', () => {
     global.entireRoles = entireRolesResult.data
     global.entireDepartment = entireDepartmentResult.data
     global.entireMenus = entireMenusResult.data
+    global.permissions = mapPermission(entireMenusResult.data.list)
   }
 
   return {

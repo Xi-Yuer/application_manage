@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/stores/mian/system'
 import type { SystemModule } from '@/stores/types'
@@ -9,6 +9,11 @@ export const useTable = (module: SystemModule, options?: any) => {
 
   const { system } = storeToRefs(useSystemStore())
   const loading = ref(false)
+
+  // 修改和删除权限
+  const Pupdate = computed(() => `system:${module}:update`)
+  const Pdelete = computed(() => `system:${module}:delete`)
+
   const { changeSystemModuleListAction, deleteSystemModuleByIdAction } = useSystemStore()
   const handleEdit = (row: any) => {
     if (modelRef.value) {
@@ -31,6 +36,8 @@ export const useTable = (module: SystemModule, options?: any) => {
     system,
     loading,
     modelRef,
+    Pupdate,
+    Pdelete,
     handleEdit,
     handleDelete,
     handleNewData

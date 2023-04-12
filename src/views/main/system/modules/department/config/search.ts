@@ -1,5 +1,8 @@
+import { SystemModule } from '@/stores/types'
+
 interface IPropType {
   formItems: Array<Record<string, any>>
+  module: SystemModule
 }
 
 const searchConfig: IPropType = {
@@ -31,7 +34,8 @@ const searchConfig: IPropType = {
       prop: 'createAt',
       span: 8
     }
-  ]
+  ],
+  module: SystemModule.DEPARTMENT
 }
 
 export default searchConfig

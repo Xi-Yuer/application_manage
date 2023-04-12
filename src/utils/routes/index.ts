@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 // 动态路由映射
 export let firstPath: any = null
-export function MapMenuToRoutes(userMenuList: any) {
+export function MapMenuToRoutes(userMenuList: any = []) {
   const routesObj = getRoutesFileObj()
   const routes: RouteRecordRaw[] = []
   for (const menu of userMenuList) {

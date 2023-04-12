@@ -1,5 +1,8 @@
+import { SystemModule } from '@/stores/types'
+
 interface IPropType {
   formItems: Array<Record<string, any>>
+  module: SystemModule
 }
 
 const searchConfig: IPropType = {
@@ -25,7 +28,8 @@ const searchConfig: IPropType = {
       placeholder: '请选择创建时间范围',
       span: 8
     }
-  ]
+  ],
+  module: SystemModule.ROLE
 }
 
 export default searchConfig

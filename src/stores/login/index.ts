@@ -26,21 +26,24 @@ export const useLoginStore = defineStore('login', () => {
   async function LoginAction(account: IAccount, isRemember: boolean, cb?: () => void) {
     // 用户登录
     const userLoginResult = await LoginActionRequest<IAccountResponse>(account)
-    if (!userLoginResult.data) return
-    local.setCache(USER_ACCOUNT, userLoginResult.data)
-    accountData.value = userLoginResult.data
+    if (userLoginResult.data) {
+      local.setCache(USER_ACCOUNT, userLoginResult.data)
+      accountData.value = userLoginResult.data
+    }
 
     // 获取用户详情
     const userDetailResult = await getUserInfoById<IuserDeatilResponse>(userLoginResult.data.id)
-    if (!userDetailResult.data) return
-    local.setCache(USER_DETAIL, userDetailResult.data)
-    userDetail.value = userDetailResult.data
+    if (userDetailResult.data) {
+      local.setCache(USER_DETAIL, userDetailResult.data)
+      userDetail.value = userDetailResult.data
+    }
 
     // 用户菜单列表
     const userMenuListResult = await getUserMenuList<IMenuListResponse>(userDetail.value!.id)
-    if (!userMenuListResult.data) return
-    local.setCache(USER_MENU_LIST, userMenuListResult.data)
-    userMenuList.value = userMenuListResult.data
+    if (userMenuListResult.data) {
+      local.setCache(USER_MENU_LIST, userMenuListResult.data)
+      userMenuList.value = userMenuListResult.data
+    }
 
     // 动态添加路由
     const routes = MapMenuToRoutes(userMenuListResult.data)
