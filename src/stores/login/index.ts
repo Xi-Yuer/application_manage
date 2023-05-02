@@ -32,24 +32,31 @@ export const useLoginStore = defineStore('login', () => {
     }
 
     // 获取用户详情
-    const userDetailResult = await getUserInfoById<IuserDeatilResponse>(userLoginResult.data.id)
-    if (userDetailResult.data) {
-      local.setCache(USER_DETAIL, userDetailResult.data)
-      userDetail.value = userDetailResult.data
+    if (userLoginResult.data) {
+      const userDetailResult = await getUserInfoById<IuserDeatilResponse>(userLoginResult.data.id)
+      if (userDetailResult.data) {
+        local.setCache(USER_DETAIL, userDetailResult.data)
+        userDetail.value = userDetailResult.data
+      }
     }
 
     // 用户菜单列表
-    const userMenuListResult = await getUserMenuList<IMenuListResponse>(userDetail.value!.id)
-    if (userMenuListResult.data) {
-      local.setCache(USER_MENU_LIST, userMenuListResult.data)
-      userMenuList.value = userMenuListResult.data
+    let userMenuListResult
+    if (userDetail.value) {
+      userMenuListResult = await getUserMenuList<IMenuListResponse>(userDetail.value.id)
+      if (userMenuListResult.data) {
+        local.setCache(USER_MENU_LIST, userMenuListResult.data)
+        userMenuList.value = userMenuListResult.data
+      }
     }
 
     // 动态添加路由
-    const routes = MapMenuToRoutes(userMenuListResult.data)
-    routes.forEach((route) => {
-      router.addRoute('main', route)
-    })
+    if (userMenuList.value) {
+      const routes = MapMenuToRoutes(userMenuList.value)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+    }
 
     useGlobalStore().fetchEntireDataAction()
 

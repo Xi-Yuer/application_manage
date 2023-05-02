@@ -44,11 +44,11 @@ const searchConfig: IPropType = {
       options: [
         {
           key: '启用',
-          value: 1
+          value: '1'
         },
         {
           key: '禁用',
-          value: 0
+          value: '0'
         }
       ]
     },

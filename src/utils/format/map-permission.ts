@@ -1,4 +1,4 @@
-export function mapPermission(menus: any[]) {
+export function mapPermission(menus: any[] = []) {
   const permissions: string[] = []
 
   function recurseGetPermission(menu: any[]) {

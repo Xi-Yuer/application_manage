@@ -28,7 +28,7 @@ export const useGlobalStore = defineStore('global', () => {
     global.entireRoles = entireRolesResult.data
     global.entireDepartment = entireDepartmentResult.data
     global.entireMenus = entireMenusResult.data
-    global.permissions = mapPermission(entireMenusResult.data.list)
+    global.permissions = mapPermission(entireMenusResult.data?.list)
   }
 
   return {
